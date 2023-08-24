@@ -61,7 +61,20 @@ apiRouter.post("/login", async (req, res) => {
 
 
 apiRouter.get("/blogs", auth, async (req, res) => {
-    res.status(200).json({ msg: req.body.userID })
+    const { userID } = req.body;
+    console.log(userID)
+    const query = {}
+    if (userID) {
+        query.userID = userID
+    }
+
+    try {
+        const blogs = await PostModel.find({})
+        res.status(200).json({ msg: "User Blogs", blogs })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+
 })
 
 

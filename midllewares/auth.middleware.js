@@ -15,7 +15,7 @@ const auth = async (req, res, next) => {
             res.status(200).json("Please Login")
         } else {
             const decoded = jwt.verify(token, process.env.SECRET);
-            console.log(decoded)
+
             req.body.userID = decoded.userID;
 
             next();
