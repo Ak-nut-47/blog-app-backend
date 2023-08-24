@@ -8,7 +8,7 @@ const apiRouter = Router();
 
 
 
-apiRouter.post("/signup", async (req, res) => {
+apiRouter.post("/register", async (req, res) => {
     try {
         const email = req.body.email;
         const user = await UserModel.findOne({ email })
