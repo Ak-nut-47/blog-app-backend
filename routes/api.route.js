@@ -2,6 +2,8 @@ const { Router } = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { UserModel } = require("../models/user.model");
+const { PostModel } = require("../models/post.model")
+const { auth } = require("../midllewares/auth.middleware")
 require("dotenv").config();
 
 const apiRouter = Router();
@@ -56,5 +58,22 @@ apiRouter.post("/login", async (req, res) => {
         res.status(400).send({ error: error.message });
     }
 });
+
+
+apiRouter.get("/blogs", auth, async (req, res) => {
+    res.status(200).json({ msg: req.body.userID })
+})
+
+
+apiRouter.post("/blogs", auth, async (req, res) => {
+    const { userID } = req.body;
+    try {
+        const post = new PostModel({ ...req.body, userID })
+        await post.save();
+        res.status(200).json({ msg: "Post Added Successfully" })
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+})
 
 module.exports = { apiRouter }
