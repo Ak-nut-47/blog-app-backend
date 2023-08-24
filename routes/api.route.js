@@ -70,7 +70,9 @@ apiRouter.get("/blogs", auth, async (req, res) => {
 
     try {
         const blogs = await PostModel.find({})
-        res.status(200).json({ msg: "User Blogs", blogs })
+        const user = await UserModel.find({ _id: userID })
+
+        res.status(200).json({ msg: "User Blogs", blogs, user })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
