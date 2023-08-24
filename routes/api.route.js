@@ -88,5 +88,19 @@ apiRouter.post("/blogs", auth, async (req, res) => {
         res.status(400).json({ error: error.message })
     }
 })
+apiRouter.delete("/delete:postID", auth, async (req, res) => {
+    const { postID } = req.params;
+    const { userID } = req.body;
+    try {
+        const post = await PostModel.findByIDAndDelete({ userID, _id: postID })
+        if (!post) {
+            res.status(400).json({ msg: "Post Not Found" })
+        } else {
+            res.status(200).json({ msg: "Post Deleted" })
+        }
+    } catch (error) {
+        res.status(400).json({ error: error.message })
+    }
+})
 
 module.exports = { apiRouter }
